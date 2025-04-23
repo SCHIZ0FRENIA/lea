@@ -1,28 +1,32 @@
+from flask import current_app, g, app
 from pymongo import MongoClient
 
-from api.app.src import constants
 
-
-class Database:
-    def __init__(self):
+def get_db():
+    """Connects to the db"""
+    if 'db' not in g:
         try:
-            self.client = MongoClient(constants.connection_string)
-            self.client.admin.command('ping')
-            self.db = self.client[constants.db_name]
-            self.users_db = self.db[constants.users_db_name]
-            print("Successfully connected to MongoDB!")
+            mongo_uri = current_app.config['MONGO_URI']
+            db_name = current_app.config['DB_NAME']
+            g.client = MongoClient(mongo_uri)
+            g.client.admin.command('ping')
+            g.db = g.client[db_name]
+            print("Connected to MongoDB")
         except Exception as e:
-            print(f"Could not connect to MongoDB: {e}")
+            print(f"Could not connect to MONGO. Exception: {e}")
+            g.db = None
+    return g.db
 
+def get_users_collection():
+    """Gets user collection from db"""
+    db = get_db()
+    if db:
+        return db[current_app.config['USERS_COLLECTION_NAME']]
+    return None
 
-    def add_user(self, name, password):
-        if self.users_db.find_one({"name" : name}):
-            return False
-        else:
-            self.users_db.insert_one({
-                "name": name,
-                "password": password
-            })
-            return True
-
-instance = Database()
+def close_db():
+    client = g.pop('client', None)
+    if client is not None:
+        client.close()
+        print("Mongo db connection closed.")
+    g.pop('db', None)

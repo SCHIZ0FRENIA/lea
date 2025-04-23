@@ -17,4 +17,4 @@ class Config:
         raise ValueError("There are no MONGO_URI var provided in the environment")
 
     DB_NAME = os.getenv("DB_NAME", "lea_db")
-    USERS_COLLECTION_NAME = "users"
+    USERS_COLLECTION_NAME = "user"
