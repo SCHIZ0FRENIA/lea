@@ -2,6 +2,8 @@ import os
 
 from app import create_app
 
+os.environ["UV_ENV_FILE"] = ".venv/.env"
+
 app = create_app()
 
 if __name__ == '__main__':

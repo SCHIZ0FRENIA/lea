@@ -1,8 +1,10 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional, Any
+from typing import Any
+
 from bson import ObjectId
+from pydantic import BaseModel, Field
 
 from .user_role import UserRole
+
 
 class PyObjectId(str):
     @classmethod
@@ -31,3 +33,7 @@ class UserCreate(BaseModel):
     name: str
     password: str
     role: UserRole
+
+class UserLogin(BaseModel):
+    name: str
+    password: str

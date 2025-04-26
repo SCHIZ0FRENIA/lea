@@ -1,6 +1,10 @@
 from flask import Flask
-from .extensions import initialize_extensions
+from .extensions import initialize_extensions, mongo
 import os
+
+from .services.user_service import UserService
+from .static.services import Services
+
 
 class Config:
     DEBUG = os.getenv("DEBUG", True)
@@ -15,11 +19,16 @@ def create_app():
 
     initialize_extensions(app)
 
-    from .routes.user_routes import user_bp
-    app.register_blueprint(user_bp, url_prefix='/v1/users')
+    from .routes.auth_route import auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/v1/auth')
 
     @app.route('/')
     def health_check():
         return 'server is ok'
+
+    with app.app_context():
+        app.services = {
+            Services.USER_SERVICE: UserService(mongo.db)
+        }
 
     return app
