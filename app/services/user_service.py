@@ -6,18 +6,18 @@ class UserService:
     def __init__(self, db):
         self.db = db
 
-    def create_user(self, name, password, role):
+    def create_user(self, login, password, role):
         result = self.db.users.insert_one({
-            "name": name,
+            "login": login,
             "password": hash_password(password),
             "role": role
         })
 
         return result
 
-    def check_user(self, name, password):
+    def check_user(self, login, password):
         result = self.db.users.find_one({
-            "name": name
+            "login": login
         })
 
         if result is None:

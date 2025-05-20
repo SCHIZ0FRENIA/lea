@@ -5,17 +5,17 @@ from .user_role import UserRole
 
 
 class User(BaseModel):
-    name: str
+    login: str
     role: UserRole
 
     class Config:
         json_encoders = {ObjectId: str}
 
 class UserCreate(BaseModel):
-    name: str
+    login: str
     password: str
     role: UserRole
 
 class UserLogin(BaseModel):
-    name: str
+    login: str
     password: str

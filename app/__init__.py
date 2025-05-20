@@ -9,8 +9,8 @@ from .static.services import Services
 
 class Config:
     DEBUG = os.getenv("DEBUG", True)
-    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:5000/")
-    SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
+    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:5000/lea")
+    SECRET_KEY = os.getenv("SECRET_KEY", "JKSDHVUPINJEWIUVH:DSNVBOKKJ!@#J!@#()IJFDNSNV*#(@RHFVJDN(*#EINDV)#@()IFJIVDSO")
 
 def create_app():
     """Generates server"""

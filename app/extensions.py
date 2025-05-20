@@ -1,7 +1,10 @@
 import logging
 from logging.handlers import RotatingFileHandler
+from flask_jwt_extended import JWTManager
 
 from flask_pymongo import PyMongo
+
+from app.utils.exceptions.lea_exception import LeaException
 
 mongo = PyMongo()
 
@@ -12,8 +15,11 @@ def initialize_extensions(app):
 
     # mongo init
     mongo.init_app(app)
-    mongo.db.users.create_index("name", unique = True)
 
+    mongo.db.users.create_index("login", unique = True)
+
+    #JWT
+    jwt = JWTManager(app)
 
     # Configure logger
     handler = RotatingFileHandler(
